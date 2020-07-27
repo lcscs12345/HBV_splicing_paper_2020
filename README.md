@@ -8,6 +8,7 @@ Most tools can be installed using conda
 - https://github.com/gpertea/stringtie
 - https://github.com/broadinstitute/picard
 - https://github.com/ENCODE-DCC/kentUtils
+- https://github.com/arq5x/bedtools
 - https://github.com/gpertea/gffcompare
 - https://github.com/Kingsford-Group/rnaseqtools
 - http://hollywood.mit.edu/burgelab/maxent/Xmaxentscan_scoreseq.html
