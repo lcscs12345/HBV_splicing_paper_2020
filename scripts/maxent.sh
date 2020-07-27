@@ -94,6 +94,7 @@ done
 
 
 # human 5'ss
+cd ~/virus/doc/hbv/rnaseq
 for i in A2 B2 C2; do \
   awk 'BEGIN {FS=OFS="\t"} $4==1 && $7>9 && $9>=25 {print $1,$2-4,$2+5,$9,$7,"+"}' ${i}.SJ.out.tab \
   | grep -v ${i} > ${i}.SJ.hg19.ss5.bed
@@ -141,8 +142,8 @@ done
 
 
 
-# HBV 5'ss
 # plotting and comparing sequence logo
+# HBV 5'ss
 cd ~/virus/doc/hbv/rnaseq/maxent
 for y in A2 B2 C2 D3; do \
   paste \
@@ -185,7 +186,7 @@ for y in A2 B2 C2 D3; do \
   | awk -v y="$y" '{print ">" y "|" $1 "\n" $2}' > ${y}.ss3.fa
 done
 
-# plotting logo
+# human 5'ss and 3'ss
 for i in A2 B2 C2 D3; do \
   weblogo -f ${i}/${i}.ss5.fa -o ${i}/${i}.ss5.pdf -D fasta -A rna -F pdf --units probability
   weblogo -f ${i}/${i}.ss3.fa -o ${i}/${i}.ss3.pdf -D fasta -A rna -F pdf --units probability
