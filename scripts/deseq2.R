@@ -64,6 +64,13 @@ pdf("D3_pUC57.maplot.pdf", width = 3.5, height = 4)
 plotMA(D3_pUC57, main="D3 vs pUC57", alpha=0.05, ylim=c(-1,1))
 dev.off()
 
+# writing output file
+dds_counts <- estimateSizeFactors(dds)
+counts <- counts(dds_counts, normalized=TRUE)
+counts <- as.data.frame(counts)
+counts <- rownames_to_column(counts, var="id")
+write.table(counts, file="counts.deseq2.tsv", sep = "\t", col.names = T, row.names = F, quote=FALSE)
+
 # plotting differentially expressed genes
 b2sig <- c("SH3BP2","INHBE","AKNA","ADM2","FAM129A","FLNC",
            "SESN2","FABP1","ASNS","CHAC1","UNC5B","LARP6")
@@ -78,10 +85,3 @@ ggplot(d, aes(condition, value, color=replicate)) +
   ylab("Normalized read counts") +
   facet_grid(symbol~., scales="free")
 dev.off()
-
-# writing output file
-dds_counts <- estimateSizeFactors(dds)
-counts <- counts(dds_counts, normalized=TRUE)
-counts <- as.data.frame(counts)
-counts <- rownames_to_column(counts, var="id")
-write.table(counts, file="counts.deseq2.tsv", sep = "\t", col.names = T, row.names = F, quote=FALSE)
