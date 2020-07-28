@@ -83,3 +83,5 @@ total.tpm \
 | awk 'BEGIN {OFS="\t"} {print $1,$4,$3,$5,$2}' \
 | sed '1i genotype\tcons_sp\tsp\ttpm\ttotal_tpm' > sp.tpm
 mv sp.tpm hbv.tpm
+# it's fine to represent these TPM values as percentages
+# in fact these TPM values should be divided by 2 (average TPM of rep1 and rep2).
