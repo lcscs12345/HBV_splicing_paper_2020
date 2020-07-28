@@ -15,6 +15,8 @@ Most tools can be installed using conda
 - https://github.com/WebLogo/weblogo
 - https://github.com/brentp/pyfasta
 - https://mafft.cbrc.jp/alignment/software/
+- https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+- https://cran.r-project.org/web/packages/tidyverse/index.html
 
 #### Reference genomes and annotations
 - http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
