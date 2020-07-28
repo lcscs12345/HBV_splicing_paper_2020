@@ -76,6 +76,7 @@ join -1 1 -2 2 -t$'\t' \
 -o 2.1,2.2,1.2,2.4,2.5,2.6 \
 <(sort -k1,1 ~/virus/doc/hbv/rnaseq/gffcompare/D3.cor) \
 <(sort -k3,3 -) | sort -k2,2n -k3,3n > D3.SJ.out.offset.bed
+
 cat \
 <(awk '{print $2 "\t5ss"}' *.SJ.out.offset.bed) \
 <(awk '{print $3 "\t3ss"}' *.SJ.out.offset.bed) \
@@ -90,7 +91,7 @@ for i in B2 C2 D3; do
   sed '1,2d;s/, /\t/g' ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.fa.map \
   | cut -f2- | sed "1i ${i}_pos\tA2_pos" > ${i}.pgrna.map
 done
-
+# SJ.out.offset.txt and *.pgrna.map are useful for indicating the MaxEntScore on the sashimi plot
 
 
 # human 5'ss
