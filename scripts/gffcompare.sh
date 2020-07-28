@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # comparing the gtf files of rep 1 and 2 using rep 1 as reference
+# and merging BAM file replicates for Gviz's sashimi plot
 mkdir ~/virus/doc/hbv/rnaseq/gffcompare/
 for i in A2 B2 C2 D3; do \
   cd ~/virus/doc/hbv/rnaseq/gffcompare/
@@ -13,6 +14,11 @@ for i in A2 B2 C2 D3; do \
   <(gtfToGenePred -genePredExt ${i}.annotated.gtf stdout | awk '$8!=1' | sort -k1,1) \
   > ${i}.txt
   cat ${i}.txt | genePredToGtf file stdin ${i}.gtf
+  
+  samtools merge ${i}.bam \
+  ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.bam \
+  ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.bam
+  samtools index ${i}.bam
 done
 
 
