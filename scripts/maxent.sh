@@ -95,7 +95,7 @@ done
 
 
 # human 5'ss
-cd ~/virus/doc/hbv/rnaseq
+cd ~/virus/doc/hbv/rnaseq/star_hbv_rep1/
 for i in A2 B2 C2; do \
   awk 'BEGIN {FS=OFS="\t"} $4==1 && $7>9 && $9>=25 {print $1,$2-4,$2+5,$9,$7,"+"}' ${i}.SJ.out.tab \
   | grep -v ${i} > ${i}.SJ.hg19.ss5.bed
