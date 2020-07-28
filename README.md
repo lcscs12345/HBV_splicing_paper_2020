@@ -17,6 +17,8 @@ Most tools can be installed using conda
 - https://mafft.cbrc.jp/alignment/software/
 - https://bioconductor.org/packages/release/bioc/html/DESeq2.html
 - https://cran.r-project.org/web/packages/tidyverse/index.html
+- https://zlib.net/pigz/
+- https://www.gnu.org/software/datamash/
 
 #### Reference genomes and annotations
 - http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
