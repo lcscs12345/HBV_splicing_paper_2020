@@ -1,4 +1,5 @@
 library(tidyverse)
+library(reshape2)
 library(DESeq2)
 setwd("~/virus/doc/hbv/rnaseq/mmquant/")
 countData <- read.table("counts.gene.txt", header=TRUE)
