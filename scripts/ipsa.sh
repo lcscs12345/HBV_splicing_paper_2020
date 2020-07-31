@@ -103,5 +103,5 @@ perl Perl/zeta.pl \
 > ${OUT}/hg19/zeta.gff
 
 cd ${OUT}/hg19/
-awk 'BEGIN{OFS="\t"} $3~/exon/ {print $1,$4-1,$5,$10,".",$7}' zeta.gff | sed 's/[";]//g' > exon.zeta.bed
-awk 'BEGIN{OFS="\t"} $3~/intron/ {print $1,$4-1,$5,$10,$12,$7}' zeta.gff | sed 's/[";]//g' > intron.zeta.bed
+awk 'BEGIN{OFS="\t"} $3~/exon/ {print $1,$4-1,$5,$10,".",$7}' zeta.gff | sed 's/[";]//g' > exon.zeta.pUC57.bed
+awk 'BEGIN{OFS="\t"} $3~/intron/ {print $1,$4-1,$5,$10,$12,$7}' zeta.gff | sed 's/[";]//g' > intron.zeta.pUC57.bed
