@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# completed Splicing Index
+# completed Splicing Index (coSI)
 
 # setting up directories
 mkdir ~/virus/doc/hbv/rnaseq/ipsa_out ~/virus/doc/hbv/rnaseq/ipsa_out/hbv ~/virus/doc/hbv/rnaseq/ipsa_out/hg19
