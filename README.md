@@ -1,4 +1,4 @@
-#### Chun Shen Lim, Vitina Sozzi, Peter A. Revill, Chris M. Brown. Quantitative analysis of the spliced variants expressed by the major hepatitis B virus genotypes. (manuscript in preparation)
+#### Chun Shen Lim, Vitina Sozzi, Peter A. Revill, Chris M. Brown. (2020). Quantitative analysis of the splice variants expressed by the major hepatitis B virus genotypes. bioRxiv. DOI:
 
 #### Requirements
 Most tools can be installed using conda
