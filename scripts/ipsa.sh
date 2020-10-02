@@ -67,7 +67,7 @@ cd ${IPSA}
 perl Perl/transcript_elements.pl - < ~/riboseq/ref/hg19/gencode.v19.annotation.gtf > ~/riboseq/ref/hg19/gencode.v19.annotation.gfx
 # chroms directory contains fasta files of indivdual human chromosome
 cd ~/riboseq/ref/hg19/
-transf -dir chroms/ -idx hg19.idx -dbx hg19.dbx
+${IPSA}/maptools-3.2/bin/transf -dir chroms/ -idx hg19.idx -dbx hg19.dbx
 
 # merging pUC57 re1 and re2
 cd ${IPSA}/hg19/
@@ -76,7 +76,7 @@ samtools merge pUC57.bam \
 ~/virus/doc/hbv/rnaseq/star_hbv/pUC57/Aligned.sortedByCoord.out.rmdup.uniq.bam
 
 #running ipsa
-sjcount -bam pUC57.bam \
+${IPSA}/sjcount-3.1/sjcount -bam pUC57.bam \
 -ssc ssc.1.tsv -log ssj.1.log -ssj ssj.1.tsv \
 -nbins 51 -read1 0 -quiet
 awk -f ${IPSA}/awk/aggregate.awk -v degree=0 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssc.2.log ssc.1.tsv > ssc.2.tsv  
