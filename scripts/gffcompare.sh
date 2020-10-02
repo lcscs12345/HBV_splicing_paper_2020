@@ -33,11 +33,7 @@ done
 
 
 # merging and comparing gtf
-echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2' > gtf.ls
-echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2\tD3.gtf2' > gtf.ls2
-
-gtfmerge union gtf.ls union.gtf
-gffcompare -i gtf.ls -o compare
+echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2\nD3.gtf2' > gtf.ls
 
 join -1 1 -2 4 -t$'\t' \
 <(sort -k1,1 D3.cor) \
@@ -47,11 +43,10 @@ join -1 1 -2 4 -t$'\t' \
 <(sort -k1,1 D3.cor) \
 <(sort -k5,5 -) > D3.gtf2
 
-gffcompare -i gtf.ls2 -o gffcompare
+gffcompare -i gtf.ls -o gffcompare
 
 
 # calculating spliced transcripts fraction
-cd ~/virus/doc/hbv/rnaseq/gffcompare
 for i in 1 2 3 4; do \
   paste \
   <(cut -f5- gffcompare.tracking | awk -v n=${i} '{print $n}' | cut -f2 -d"|") \
