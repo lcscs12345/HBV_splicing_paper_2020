@@ -5,7 +5,7 @@
 # setting up directories
 mkdir ~/virus/doc/hbv/rnaseq/ipsa_out ~/virus/doc/hbv/rnaseq/ipsa_out/hbv ~/virus/doc/hbv/rnaseq/ipsa_out/hg19
 OUT=/Network/Servers/biocldap.otago.ac.nz/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/ipsa_out
-IPSA=/Network/Servers/biocldap.otago.ac.nz/Volumes/userdata/student_users/chunshenlim/riboseq/src/ipsa
+IPSA=/Network/Servers/biocldap.otago.ac.nz/Volumes/userdata/student_users/chunshenlim/virus/src/ipsa
 
 # HBV
 # building indexs for ipsa
@@ -17,7 +17,7 @@ done
 cat ${OUT}/hbv/*.gtf > ${OUT}/hbv/hbv.gtf
 perl Perl/transcript_elements.pl - < ${OUT}/hbv/hbv.gtf > ${OUT}/hbv/hbv.gfx
 cd ${OUT}/hbv/
-transf -dir ./ -idx hbv.idx -dbx hbv.dbx 
+${IPSA}/maptools-3.2/bin/transf -dir ./ -idx hbv.idx -dbx hbv.dbx 
 
 # merging the BAM files of HBV genotypes
 for i in A2 B2 C2 D3; do \
@@ -30,7 +30,7 @@ samtools merge hbv.bam *.bam
 rm *_rep*
 
 #running ipsa
-sjcount -bam hbv.bam \
+${IPSA}/sjcount-3.1/sjcount -bam hbv.bam \
 -ssc ssc.1.tsv -log ssj.1.log -ssj ssj.1.tsv \
 -nbins 51 -read1 0 -quiet
 awk -f ${IPSA}/awk/aggregate.awk -v degree=0 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssc.2.log ssc.1.tsv > ssc.2.tsv  
