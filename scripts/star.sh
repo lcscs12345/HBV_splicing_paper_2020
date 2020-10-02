@@ -53,12 +53,11 @@ for i in A2 B2 C2 D3; do \
  samtools index Aligned.sortedByCoord.out.rmdup.uniq.bam
  samtools view -h Aligned.sortedByCoord.out.rmdup.uniq.bam ${i} | sed "s/${i}/HBV/" | samtools view -S -bh - > ${i}.bam
  samtools index ${i}.bam
- stringtie Aligned.sortedByCoord.out.rmdup.uniq.bam \
- -p 20 \
- -f 0 \
- -l HBV \
- -o stringtie.gtf \
- -A gene_abund.tab
+ stringtie \
+ Aligned.sortedByCoord.out.rmdup.uniq.bam \
+ --rf -G ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.gtf \
+ -p 20 -f 0 -l ${i} -j 2 \
+ -A gene_abund.tab > stringtie.gtf
  grep ^${i} stringtie.gtf | sed "s/${i}/HBV/" | awk '$7~/+/' > ${i}.gtf
 done
 
@@ -96,12 +95,11 @@ for i in A2 B2 C2 D3; do \
  samtools index Aligned.sortedByCoord.out.rmdup.uniq.bam
  samtools view -h Aligned.sortedByCoord.out.rmdup.uniq.bam ${i} | sed "s/${i}/HBV/" | samtools view -S -bh - > ${i}.bam
  samtools index ${i}.bam
- stringtie Aligned.sortedByCoord.out.rmdup.uniq.bam \
- -p 20 \
- -f 0 \
- -l HBV \
- -o stringtie.gtf \
- -A gene_abund.tab
+ stringtie \
+ Aligned.sortedByCoord.out.rmdup.uniq.bam \
+ --rf -G ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.gtf \
+ -p 20 -f 0 -l ${i} -j 2 \
+ -A gene_abund.tab > stringtie.gtf
  grep ^${i} stringtie.gtf | sed "s/${i}/HBV/" | awk '$7~/+/' > ${i}.gtf
 done
 
