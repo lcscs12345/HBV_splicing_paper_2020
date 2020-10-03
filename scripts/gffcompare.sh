@@ -73,13 +73,13 @@ for i in A2 B2 C2 D3; do \
   | join -1 2 -2 1 -t$'\t' \
   <(sort -k2,2 -) \
   <(grep TPM ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf | awk 'BEGIN {OFS="\t"} {print $12,$NF}' | sed 's/[";]//g' | sort -k1,1) \
-  | awk -v s=${i} 'BEGIN {OFS="\t"} {print $1, s, $3+$4}'
+  | awk -v s=${i} 'BEGIN {OFS="\t"} {print $1, s, ($3+$4)/2}'
 done > hbv.tpm
 
 for i in A2 B2 C2 D3; do \
   grep TPM ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf | awk -v s=${i} '{print s "\t" $NF}' | sed 's/[";]//g' | datamash -g1 sum 2
   grep TPM ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf | awk -v s=${i} '{print s "\t" $NF}' | sed 's/[";]//g' | datamash -g1 sum 2
-done | datamash -g1 sum 2 > total.tpm
+done | datamash -g1 mean 2 > total.tpm
 
 join -j1 -t$'\t' \
 <(sort -k1,1 gffcompare.map) \
@@ -92,13 +92,11 @@ total.tpm \
 join -1 1 -2 2 -t$'\t' \
 -o 2.1,1.2,2.2,2.3,2.4,2.5 \
 <(sort map.txt) <(sed '1d' sp.tpm | sort -k2,2) \
-| sed '1i genotype\tsplice_variant\tTCONS\toId\tTPM\ttotal_TPM' > splice_variants.txt
+| sed '1i genotype\tspliced_variant\tTCONS\toId\tTPM\ttotal_TPM' > splice_variants.txt
 sed -i 's/\tSP/\tKnown\tSP/;s/\tpSP/\tCCS\tpSP/;s/\tsplice_variant/\tstatus\tsplice_variant/;s/CCS\tpSP13/Novel\tpSP13/;s/CCS\tpSP14/Novel\tpSP14/' splice_variants.txt
 
 awk 'BEGIN{OFS="\t"} {if($2~/Known/) {print $1,$3,$6} else {print $1,$2,$6}}' splice_variants.txt > pie.txt
 
 paste \
 <(datamash -s -H -g 1 sum 6 < splice_variants.txt | sed '1d') <(cut -f2 total.tpm) \
-| awk 'BEGIN{OFS="\t"; print "Genotype\tSpliced\tUnspliced"} {print $1,$2,$3-$2}' > bar.txt
-# it's fine to represent these TPM values as percentages
-# in fact these TPM values should be divided by 2 (average TPM of rep1 and rep2).
+| awk 'BEGIN{OFS="\t"; print "Genotype\tSpliced\tUnspliced"}{print $1,$2,$3-$2}' > bar.txt
