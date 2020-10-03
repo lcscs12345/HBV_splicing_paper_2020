@@ -14,7 +14,7 @@ for i in A2 B2 C2 D3; do \
   <(gtfToGenePred -genePredExt ${i}.annotated.gtf stdout | awk '$8!=1' | sort -k1,1) \
   > ${i}.txt
   cat ${i}.txt | genePredToGtf file stdin ${i}.gtf
-  
+
   samtools merge ${i}.bam \
   ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.bam \
   ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.bam
@@ -27,31 +27,43 @@ for i in B2 C2; do \
   awk 'BEGIN {FS=OFS="\t"} $4>=540 {print $1,$2,$3,$4+6,$5+6,$6,$7,$8,$9}' ${i}.gtf > ${i}.gtf2
   awk 'BEGIN {FS=OFS="\t"} $4==1 && $5>=540 {print $1,$2,$3,$4,$5+6,$6,$7,$8,$9}' ${i}.gtf >> ${i}.gtf2
   awk 'BEGIN {FS=OFS="\t"} $4==458 {print $1,$2,$3,$4,$5+6,$6,$7,$8,$9}' ${i}.gtf >> ${i}.gtf2
-  awk 'BEGIN {FS=OFS="\t"} $4<540 && $4!=1 && $4!=458 && $5>540 {print $1,$2,$3,$4,$5+6,$6,$7,$8,$9}' ${i}.gtf >> ${i}.gtf2
+  awk '$4<540 && $4!=1 && $4!=458' ${i}.gtf >> ${i}.gtf2
   awk '$4==1 && $5<540' ${i}.gtf >> ${i}.gtf2
 done
 
 
 # merging and comparing gtf
-echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2\nD3.gtf2' > gtf.ls
-
 join -1 1 -2 4 -t$'\t' \
-<(sort -k1,1 D3.cor) \
+<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
 <(sort -k4,4 D3.gtf) \
 | cut -f2- | join -1 1 -2 5 -t$'\t' \
 -o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
-<(sort -k1,1 D3.cor) \
+<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
 <(sort -k5,5 -) > D3.gtf2
 
+join -1 1 -2 4 -t$'\t' \
+<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
+<(sort -k4,4 ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf) \
+| cut -f2- | join -1 1 -2 5 -t$'\t' \
+-o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
+<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
+<(sort -k5,5 -) | sed 's/X02496\.1/HBV/' > X02496.gtf
+
+echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2\nD3.gtf2\nX02496.gtf' > gtf.ls
 gffcompare -i gtf.ls -o gffcompare
+
+join -t$'\t'  \
+<(sort map.txt) \
+<(gtfToGenePred gffcompare.combined.gtf stdout | sort) \
+| cut -f2- | sort -k1,1g \
+| genePredToGtf file stdin combined.gtf
 
 
 # calculating spliced transcripts fraction
-for i in 1 2 3 4; do \
+for i in 1 2 3 4 5; do \
   paste \
   <(cut -f5- gffcompare.tracking | awk -v n=${i} '{print $n}' | cut -f2 -d"|") \
-  <(cut -f1 gffcompare.tracking) \
-  | grep -v TCONS_00000012
+  <(cut -f1 gffcompare.tracking)
 done | grep -v "\-" > gffcompare.map
 
 for i in A2 B2 C2 D3; do \
@@ -75,8 +87,11 @@ join -j1 -t$'\t' \
 | join -1 1 -2 3 -t$'\t' \
 total.tpm \
 <(sort -k3,3 -) \
-| awk 'BEGIN {OFS="\t"} {print $1,$4,$3,$5,$2}' \
-| sed '1i genotype\tcons_sp\tsp\ttpm\ttotal_tpm' > sp.tpm
-mv sp.tpm hbv.tpm
+| awk 'BEGIN {OFS="\t"} {print $1,$4,$3,$5,$2}' > sp.tpm
+
+join -1 1 -2 2 -t$'\t' \
+-o 2.1,1.2,2.2,2.3,2.4,2.5 \
+<(sort map.txt) <(sed '1d' sp.tpm | sort -k2,2) \
+| sed '1i genotype\tspliced_variant\tTCONS\toId\tTPM\ttotal_TPM' > splice_variants.txt
 # it's fine to represent these TPM values as percentages
 # in fact these TPM values should be divided by 2 (average TPM of rep1 and rep2).
