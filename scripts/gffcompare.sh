@@ -92,6 +92,6 @@ total.tpm \
 join -1 1 -2 2 -t$'\t' \
 -o 2.1,1.2,2.2,2.3,2.4,2.5 \
 <(sort map.txt) <(sed '1d' sp.tpm | sort -k2,2) \
-| sed '1i genotype\tspliced_variant\tTCONS\toId\tTPM\ttotal_TPM' > splice_variants.txt
+| sed '1i genotype\tsplice_variant\tTCONS\toId\tTPM\ttotal_TPM' > splice_variants.txt
 # it's fine to represent these TPM values as percentages
 # in fact these TPM values should be divided by 2 (average TPM of rep1 and rep2).
