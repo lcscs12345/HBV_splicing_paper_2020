@@ -22,31 +22,23 @@ for i in A2 B2 C2 D3; do \
 done
 
 
-# inserting gaps
-for i in B2 C2; do \
-  awk 'BEGIN {FS=OFS="\t"} $4>=540 {print $1,$2,$3,$4+6,$5+6,$6,$7,$8,$9}' ${i}.gtf > ${i}.gtf2
-  awk 'BEGIN {FS=OFS="\t"} $4==1 && $5>=540 {print $1,$2,$3,$4,$5+6,$6,$7,$8,$9}' ${i}.gtf >> ${i}.gtf2
-  awk 'BEGIN {FS=OFS="\t"} $4==458 {print $1,$2,$3,$4,$5+6,$6,$7,$8,$9}' ${i}.gtf >> ${i}.gtf2
-  awk '$4<540 && $4!=1 && $4!=458' ${i}.gtf >> ${i}.gtf2
-  awk '$4==1 && $5<540' ${i}.gtf >> ${i}.gtf2
+# merging and comparing gtf
+for i in B2 C2 D3; do \
+  join -1 1 -2 4 -t$'\t' \
+  <(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/$i.pgrna.map | sort -k1,1) \
+  <(sort -k4,4 $i.gtf) \
+  | cut -f2- | join -1 1 -2 5 -t$'\t' \
+  -o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
+  <(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/$i.pgrna.map | sort -k1,1) \
+  <(sort -k5,5 -) > $i.gtf2
 done
 
-
-# merging and comparing gtf
 join -1 1 -2 4 -t$'\t' \
-<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
-<(sort -k4,4 D3.gtf) \
-| cut -f2- | join -1 1 -2 5 -t$'\t' \
--o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
-<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
-<(sort -k5,5 -) > D3.gtf2
-
-join -1 1 -2 4 -t$'\t' \
-<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
+<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
 <(sort -k4,4 ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf) \
 | cut -f2- | join -1 1 -2 5 -t$'\t' \
 -o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
-<(awk 'NR>1 {print $2 "\t" $3}' pgrna.pos.txt | sort -k1,1) \
+<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
 <(sort -k5,5 -) | sed 's/X02496\.1/HBV/' > X02496.gtf
 
 echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2\nD3.gtf2\nX02496.gtf' > gtf.ls
@@ -59,12 +51,52 @@ join -t$'\t'  \
 | genePredToGtf file stdin combined.gtf
 
 
+# Add splice variant ID to X02496.1 GTF file
+awk '$9~/ccs/ {print $1 "\t" $9}' gffcompare.tracking | sed 's/|/\t/g' | cut -f1,3 > map.ccs.txt
+join -t$'\t' \
+<(sort map.txt) \
+<(sort map.ccs.txt) \
+| cut -f2- \
+| join -1 2 -2 1 -t$'\t' \
+<(sort -k2,2 -) <(gtfToGenePred ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf stdout | sort) \
+| cut -f2- | genePredToGtf file stdin combined.X02496.1.gtf
+join -t$'\t' \
+<(awk 'NR>12 {print $2 "\t" $1}' map.ccs.txt | sort) \
+<(gtfToGenePred ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf stdout | sort) \
+| cut -f1,3- | genePredToGtf file stdin combined.X02496.2.gtf
+
+
+# group introns by splice variants
+cat combined.X02496.*.gtf \
+| join -1 1 -2 4 -t$'\t' \
+<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
+<(sort -k4,4 -) \
+| cut -f2- | join -1 1 -2 5 -t$'\t' \
+-o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
+<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
+<(sort -k5,5 -) \
+| gtfToGenePred stdin stdout \
+| genePredToBed stdin combined.X02496.bed
+
+gtfToGenePred combined.gtf stdout | awk '/SP5|pSP13|pSP14/' \
+| genePredToBed stdin stdout \
+| cat - combined.X02496.bed \
+| sort -k4,4r \
+| while read i; do \
+  bedtools subtract \
+  -a <(echo $i | awk 'BEGIN{OFS="\t"} {print $1,"0\t3246",$4,$5,$6}') \
+  -b <(echo $i | sed 's/ /\t/g' | bed12ToBed6)
+done \
+| awk 'BEGIN{OFS="\t"} {print "A2",$2+1,$3,$4,$5,$6}' \
+| awk '{a[$1 "\t" $2 "\t" $3]=a[$1 "\t" $2 "\t" $3] ? a[$1 "\t" $2 "\t" $3]","$4 : $4} END {for (i in a) {print i "\t" a[i]}}' > combined.introns.bed
+
+
 # calculating spliced transcripts fraction
 for i in 1 2 3 4 5; do \
   paste \
   <(cut -f5- gffcompare.tracking | awk -v n=${i} '{print $n}' | cut -f2 -d"|") \
   <(cut -f1 gffcompare.tracking)
-done | grep -v "\-" > gffcompare.map
+done | grep -v "\-" > gffcompare.map2
 
 for i in A2 B2 C2 D3; do \
   join -j1 -t$'\t' \
@@ -93,10 +125,8 @@ join -1 1 -2 2 -t$'\t' \
 -o 2.1,1.2,2.2,2.3,2.4,2.5 \
 <(sort map.txt) <(sed '1d' sp.tpm | sort -k2,2) \
 | sed '1i genotype\tspliced_variant\tTCONS\toId\tTPM\ttotal_TPM' > splice_variants.txt
-sed -i 's/\tSP/\tKnown\tSP/;s/\tpSP/\tCCS\tpSP/;s/\tsplice_variant/\tstatus\tsplice_variant/;s/CCS\tpSP13/Novel\tpSP13/;s/CCS\tpSP14/Novel\tpSP14/' splice_variants.txt
+sed -i 's/\tSP/\tKnown\tSP/;s/\tpSP/\tCCS\tpSP/;s/\tsplice_variant/\tremarks\tsplice_variant/;s/CCS\tpSP13/Novel\tpSP13/;s/CCS\tpSP14/Novel\tpSP14/' splice_variants.txt
 
 awk 'BEGIN{OFS="\t"} {if($2~/Known/) {print $1,$3,$6} else {print $1,$2,$6}}' splice_variants.txt > pie.txt
 
-paste \
-<(datamash -s -H -g 1 sum 6 < splice_variants.txt | sed '1d') <(cut -f2 total.tpm) \
-| awk 'BEGIN{OFS="\t"; print "Genotype\tSpliced\tUnspliced"}{print $1,$2,$3-$2}' > bar.txt
+paste <(datamash -s -H -g 1 sum 6 < splice_variants.txt | sed '1d') <(cut -f2 total.tpm) | awk 'BEGIN{OFS="\t"; print "Genotype\tSpliced\tUnspliced"}{print $1,$2,$3-$2}' > bar.txt
