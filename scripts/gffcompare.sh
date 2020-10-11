@@ -96,7 +96,7 @@ for i in 1 2 3 4 5; do \
   paste \
   <(cut -f5- gffcompare.tracking | awk -v n=${i} '{print $n}' | cut -f2 -d"|") \
   <(cut -f1 gffcompare.tracking)
-done | grep -v "\-" > gffcompare.map2
+done | grep -v "\-" > gffcompare.map
 
 for i in A2 B2 C2 D3; do \
   join -j1 -t$'\t' \
