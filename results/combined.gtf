@@ -10,7 +10,7 @@ HBV	stdin	exon	2793	3246	.	+	.	gene_id "pSP11"; transcript_id "pSP11"; exon_numb
 HBV	stdin	exon	1	1211	.	+	.	gene_id "pSP12"; transcript_id "pSP12"; exon_number "1"; exon_id "pSP12.1";
 HBV	stdin	exon	1690	3246	.	+	.	gene_id "pSP12"; transcript_id "pSP12"; exon_number "2"; exon_id "pSP12.2";
 HBV	stdin	exon	1	274	.	+	.	gene_id "SP4"; transcript_id "SP4"; exon_number "1"; exon_id "SP4.1";
-HBV	stdin	exon	537	634	.	+	.	gene_id "SP4"; transcript_id "SP4"; exon_number "2"; exon_id "SP4.2";
+HBV	stdin	exon	537	640	.	+	.	gene_id "SP4"; transcript_id "SP4"; exon_number "2"; exon_id "SP4.2";
 HBV	stdin	exon	1897	3246	.	+	.	gene_id "SP4"; transcript_id "SP4"; exon_number "3"; exon_id "SP4.3";
 HBV	stdin	exon	1	640	.	+	.	gene_id "pSP7"; transcript_id "pSP7"; exon_number "1"; exon_id "pSP7.1";
 HBV	stdin	exon	2793	3246	.	+	.	gene_id "pSP7"; transcript_id "pSP7"; exon_number "2"; exon_id "pSP7.2";
