@@ -64,9 +64,9 @@ awk 'BEGIN{OFS="\t"} $3~/intron/ {print $1,$4-1,$5,$10,$12,$7}' zeta.gff | sed '
 # human
 # building indexs for ipsa
 cd ${IPSA}
-perl Perl/transcript_elements.pl - < ~/riboseq/ref/hg19/gencode.v19.annotation.gtf > ~/riboseq/ref/hg19/gencode.v19.annotation.gfx
+perl Perl/transcript_elements.pl - < ~/virus/ref/hg19/gencode.v19.annotation.gtf > ~/virus/ref/hg19/gencode.v19.annotation.gfx
 # chroms directory contains fasta files of indivdual human chromosome
-cd ~/riboseq/ref/hg19/
+cd ~/virus/ref/hg19/
 ${IPSA}/maptools-3.2/bin/transf -dir chroms/ -idx hg19.idx -dbx hg19.dbx
 
 # merging pUC57 re1 and re2
@@ -83,9 +83,9 @@ awk -f ${IPSA}/awk/aggregate.awk -v degree=0 -v readLength=51 -v margin=5 -v pre
 awk -f ${IPSA}/awk/aggregate.awk -v degree=1 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssj.2.log ssj.1.tsv > ssj.2.tsv  
 cd ${IPSA}
 perl Perl/annotate.pl -deltaSS 10 \
--annot ~/riboseq/ref/hg19/gencode.v19.annotation.gfx \
--dbx ~/riboseq/ref/hg19/hg19.dbx \
--idx ~/riboseq/ref/hg19/hg19.idx \
+-annot ~/virus/ref/hg19/gencode.v19.annotation.gfx \
+-dbx ~/virus/ref/hg19/hg19.dbx \
+-idx ~/virus/ref/hg19/hg19.idx \
 -in ${OUT}/hg19/ssj.2.tsv \
 > ${OUT}/hg19/ssj.3.tsv
 
@@ -97,7 +97,7 @@ awk '$4>=1.5 && $5>=0' ssj.4.tsv > ssj.6.tsv
 
 cd ${IPSA}
 perl Perl/zeta.pl \
--annot ~/riboseq/ref/hg19/gencode.v19.annotation.gfx \
+-annot ~/virus/ref/hg19/gencode.v19.annotation.gfx \
 -ssc ${OUT}/hg19/ssc.6.tsv \
 -ssj ${OUT}/hg19/ssj.6.tsv -mincount 10 \
 > ${OUT}/hg19/zeta.gff
