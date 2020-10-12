@@ -32,7 +32,7 @@ rm *_rep*
 #running ipsa
 ${IPSA}/sjcount-3.1/sjcount -bam hbv.bam \
 -ssc ssc.1.tsv -log ssj.1.log -ssj ssj.1.tsv \
--nbins 51 -read1 0 -quiet
+-nbins 51 -read1 1 -quiet
 awk -f ${IPSA}/awk/aggregate.awk -v degree=0 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssc.2.log ssc.1.tsv > ssc.2.tsv  
 awk -f ${IPSA}/awk/aggregate.awk -v degree=1 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssj.2.log ssj.1.tsv > ssj.2.tsv  
 cd ${IPSA}
@@ -78,7 +78,7 @@ samtools merge pUC57.bam \
 #running ipsa
 ${IPSA}/sjcount-3.1/sjcount -bam pUC57.bam \
 -ssc ssc.1.tsv -log ssj.1.log -ssj ssj.1.tsv \
--nbins 51 -read1 0 -quiet
+-nbins 51 -read1 1 -quiet
 awk -f ${IPSA}/awk/aggregate.awk -v degree=0 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssc.2.log ssc.1.tsv > ssc.2.tsv  
 awk -f ${IPSA}/awk/aggregate.awk -v degree=1 -v readLength=51 -v margin=5 -v prefix= -v logfile=ssj.2.log ssj.1.tsv > ssj.2.tsv  
 cd ${IPSA}
