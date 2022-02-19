@@ -1,4 +1,4 @@
-#### Chun Shen Lim, Vitina Sozzi, Margaret Littlejohn, Lilly K.W. Yuen, Nadia Warner, Brigid Betz-Stablein, Fabio Luciani, Peter A. Revill, Chris M. Brown. (2020). Quantitative analysis of the splice variants expressed by the major hepatitis B virus genotypes. bioRxiv. DOI:[10.1099/mgen.0.000492](https://doi.org/10.1099/mgen.0.000492)
+#### Chun Shen Lim, Vitina Sozzi, Margaret Littlejohn, Lilly K.W. Yuen, Nadia Warner, Brigid Betz-Stablein, Fabio Luciani, Peter A. Revill, Chris M. Brown. (2020). Quantitative analysis of the splice variants expressed by the major hepatitis B virus genotypes. Microbial Genomics. DOI:[10.1099/mgen.0.000492](https://doi.org/10.1099/mgen.0.000492)
 
 #### Requirements
 Most tools can be installed using conda or pip
