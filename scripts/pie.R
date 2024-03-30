@@ -2,14 +2,14 @@ library(tidyverse)
 library(scales)
 library(ggforce)
 
-d <- read.table("~/virus/doc/hbv/rnaseq/gffcompare/splice_variants.txt", sep="\t", header=T)
+d <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/splice_variants.txt", sep="\t", header=T)
 d$spliced_variant <- factor(d$spliced_variant, 
                             levels = c("pSP7","pSP6","pSP5",
                                        "pSP4","SP7","pSP3",
                                        "pSP2","pSP1","SP6",
                                        "SP9","SP1","SP5"))
 
-pdf("~/virus/doc/hbv/rnaseq/gffcompare/pie.pdf", width = 8, height = 6)
+pdf("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/pie.pdf", width = 8, height = 6)
 # https://stackoverflow.com/questions/16184188/ggplot-facet-piechart-placing-text-in-the-middle-of-pie-chart-slices
 # adapted from Claus Wilke's solution
 dat_pies <- with(d, d[order(genotype, spliced_variant,decreasing=T),])

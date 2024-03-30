@@ -1,21 +1,21 @@
 #!/bin/bash
 
 # scoring HBV 5'ss and 3'ss
-cd ~/virus/doc/hbv/rnaseq/
+cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/
 mkdir maxent
-cd ~/virus/doc/hbv/rnaseq/maxent
+cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent
 for i in A2 B2 C2 D3; do \
   (
-  pyfasta split -k9 -n1 -o8 ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.fa
-  mv ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.split.9mer.8overlap.fa .
+  pyfasta split -k9 -n1 -o8 ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${i}/${i}.pgrna.fa
+  mv ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${i}/${i}.pgrna.split.9mer.8overlap.fa .
   sed -n 'n;p' ${i}.pgrna.split.9mer.8overlap.fa \
   | while read i; do \
     cat <(echo ">pgrna") <(echo ${i}) \
     | maxentscan_score5.pl -
   done > ${i}.score5.txt
   sed -i '$d' ${i}.score5.txt
-  pyfasta split -k23 -n1 -o22 ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.fa
-  mv ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.split.23mer.22overlap.fa .
+  pyfasta split -k23 -n1 -o22 ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${i}/${i}.pgrna.fa
+  mv ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${i}/${i}.pgrna.split.23mer.22overlap.fa .
   sed -n 'n;p' ${i}.pgrna.split.23mer.22overlap.fa \
   | while read i; do \
     cat <(echo ">pgrna") <(echo ${i}) \
@@ -42,8 +42,8 @@ done
 # getting junction read counts
 for i in A2 B2 C2 D3; do \
   cat \
-  ~/virus/doc/hbv/rnaseq/star_hbv/${i}/SJ.out.tab \
-  ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/SJ.out.tab \
+  ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv/${i}/SJ.out.tab \
+  ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/${i}/SJ.out.tab \
   | grep ^${i} \
   | awk 'BEGIN {FS="\t"; OFS="|"} $4==1 && $7>9 && $9>=25 {print $1,$2-1,$3+1,".","+" "\t" $7}' \
   | datamash -s -g1 sum 2 | sed 's/|/\t/g' | awk 'BEGIN {FS=OFS="\t"} {print $1,$2,$3,$4,$6,$5}' \
@@ -61,7 +61,7 @@ done
 sed -i 's/2677/2674/' D3.SJ.out.txt
 
 # filtering and adding gap to SJ.out.tab for ss comparison
-cd ~/virus/doc/hbv/rnaseq/maxent/
+cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/
 cat A2.SJ.out.bed > A2.SJ.out.offset.bed
 awk 'BEGIN {FS=OFS="\t"} $2<540 {print $1,$2,$3,$4,$5,"+"}' B2.SJ.out.bed > B2.SJ.out.offset.bed
 awk 'BEGIN {FS=OFS="\t"} $2>=540 {print $1,$2+6,$3+6,$4,$5,"+"}' B2.SJ.out.bed >> B2.SJ.out.offset.bed
@@ -70,11 +70,11 @@ awk 'BEGIN {FS=OFS="\t"} $2>=540 {print $1,$2+6,$3+6,$4,$5,"+"}' C2.SJ.out.bed >
 # D3
 join -1 1 -2 2 -t$'\t' \
 -o 2.1,1.2,2.3,2.4,2.5,2.6 \
-<(sort -k1,1 ~/virus/doc/hbv/rnaseq/gffcompare/D3.cor) \
+<(sort -k1,1 ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/D3.cor) \
 <(sort -k2,2 D3.SJ.out.bed) \
 | join -1 1 -2 3 -t$'\t' \
 -o 2.1,2.2,1.2,2.4,2.5,2.6 \
-<(sort -k1,1 ~/virus/doc/hbv/rnaseq/gffcompare/D3.cor) \
+<(sort -k1,1 ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/D3.cor) \
 <(sort -k3,3 -) | sort -k2,2n -k3,3n > D3.SJ.out.offset.bed
 
 cat \
@@ -86,16 +86,16 @@ cat \
 # getting correspondence table of positions
 for i in B2 C2 D3; do
   mafft \
-  --addfull ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.fa \
-  --mapout ~/virus/ref/hbv/pgrna/A2/A2.pgrna.fa
-  sed '1,2d;s/, /\t/g' ~/virus/ref/hbv/pgrna/${i}/${i}.pgrna.fa.map \
+  --addfull ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${i}/${i}.pgrna.fa \
+  --mapout ~/HBV_splicing_paper_2020/ref/hbv/pgrna/A2/A2.pgrna.fa
+  sed '1,2d;s/, /\t/g' ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${i}/${i}.pgrna.fa.map \
   | cut -f2- | sed "1i ${i}_pos\tA2_pos" > ${i}.pgrna.map
 done
 # SJ.out.offset.txt and *.pgrna.map are useful for indicating the MaxEntScore on the sashimi plot
 
 
 # human 5'ss
-cd ~/virus/doc/hbv/rnaseq/star_hbv_rep1/
+cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/
 for i in A2 B2 C2; do \
   awk 'BEGIN {FS=OFS="\t"} $4==1 && $7>9 && $9>=25 {print $1,$2-4,$2+5,$9,$7,"+"}' ${i}.SJ.out.tab \
   | grep -v ${i} > ${i}.SJ.hg19.ss5.bed
@@ -105,7 +105,7 @@ done
 for y in A2 B2 C2; do \
   paste \
     <(cut -f5 ${y}/SJ.hg19.ss5.bed) \
-    <(bedtools getfasta -fi ~/riboseq/ref/hg19/hg19.chromFa.fa -bed ${y}/SJ.hg19.ss5.bed -s -fo stdout -tab) \
+    <(bedtools getfasta -fi ~/HBV_splicing_paper_2020/ref/hg19/hg19.chromFa.fa -bed ${y}/SJ.hg19.ss5.bed -s -fo stdout -tab) \
   | cut -f1,3 \
   | while read i j; do \
     for x in `seq ${i}`; do \
@@ -128,7 +128,7 @@ done
 for y in A2 B2 C2; do \
   paste \
     <(cut -f5 ${y}/SJ.hg19.ss3.bed) \
-    <(bedtools getfasta -fi ~/riboseq/ref/hg19/hg19.chromFa.fa -bed ${y}/SJ.hg19.ss3.bed -s -fo stdout -tab) \
+    <(bedtools getfasta -fi ~/HBV_splicing_paper_2020/ref/hg19/hg19.chromFa.fa -bed ${y}/SJ.hg19.ss3.bed -s -fo stdout -tab) \
   | cut -f1,3 \
   | while read i j; do \
     for x in `seq ${i}`; do \
@@ -145,7 +145,7 @@ done
 
 # plotting and comparing sequence logo
 # HBV 5'ss
-cd ~/virus/doc/hbv/rnaseq/maxent
+cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent
 for y in A2 B2 C2 D3; do \
   paste \
     <(cat ${y}.SJ.out.bed \
@@ -153,7 +153,7 @@ for y in A2 B2 C2 D3; do \
     <(cat ${y}.SJ.out.bed \
     | datamash -s -g 2 sum 5 \
     | awk -v y="$y" 'BEGIN {OFS="\t"} {print y,$1-3,$1+6}' \
-    | bedtools getfasta -fi ~/virus/ref/hbv/pgrna/${y}/${y}.pgrna.fa -bed stdin -fo stdout -tab) \
+    | bedtools getfasta -fi ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${y}/${y}.pgrna.fa -bed stdin -fo stdout -tab) \
   | cut -f2,4 \
   | while read i j; do \
     for x in `seq ${i}`; do \
@@ -174,7 +174,7 @@ for y in A2 B2 C2 D3; do \
     <(cat ${y}.SJ.out.bed \
     | datamash -s -g 3 sum 5 \
     | awk -v y="$y" 'BEGIN {OFS="\t"} {print y,$1-21,$1+2}' \
-    | bedtools getfasta -fi ~/virus/ref/hbv/pgrna/${y}/${y}.pgrna.fa -bed stdin -fo stdout -tab) \
+    | bedtools getfasta -fi ~/HBV_splicing_paper_2020/ref/hbv/pgrna/${y}/${y}.pgrna.fa -bed stdin -fo stdout -tab) \
   | cut -f2,4 \
   | while read i j; do \
     for x in `seq ${i}`; do \

@@ -4,10 +4,10 @@ library(tidyverse)
 library(reshape2)
 library(exactRankTests)
 
-a2 <- read.table("~/virus/doc/hbv/rnaseq/maxent/A2.SJ.out.txt", header=TRUE, sep="\t")
-b2 <- read.table("~/virus/doc/hbv/rnaseq/maxent/B2.SJ.out.txt", header=TRUE, sep="\t")
-c2 <- read.table("~/virus/doc/hbv/rnaseq/maxent/C2.SJ.out.txt", header=TRUE, sep="\t")
-d3 <- read.table("~/virus/doc/hbv/rnaseq/maxent/D3.SJ.out.txt", header=TRUE, sep="\t")
+a2 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/A2.SJ.out.txt", header=TRUE, sep="\t")
+b2 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/B2.SJ.out.txt", header=TRUE, sep="\t")
+c2 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/C2.SJ.out.txt", header=TRUE, sep="\t")
+d3 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/D3.SJ.out.txt", header=TRUE, sep="\t")
 a2 <- subset(a2, select=-A2_pos) %>% melt()
 b2 <- subset(b2, select=-B2_pos) %>% melt()
 c2 <- subset(c2, select=-C2_pos) %>% melt()
@@ -16,11 +16,11 @@ hbv <- rbind(a2,b2,c2,d3)
 hbv$value <- as.numeric(hbv$value)
 hbv$ss <- factor(hbv$ss, levels = c("5ss","3ss"))
 
-ha2 <- read.table("~/virus/doc/hbv/rnaseq/maxent_hg19/A2.SJ.out.txt", header=TRUE, sep="\t")
-hb2 <- read.table("~/virus/doc/hbv/rnaseq/maxent_hg19/B2.SJ.out.txt", header=TRUE, sep="\t")
-hc2 <- read.table("~/virus/doc/hbv/rnaseq/maxent_hg19/C2.SJ.out.txt", header=TRUE, sep="\t")
-hd3 <- read.table("~/virus/doc/hbv/rnaseq/maxent_hg19/D3.SJ.out.txt", header=TRUE, sep="\t")
-h57 <- read.table("~/virus/doc/hbv/rnaseq/maxent_hg19/pUC57.SJ.out.txt", header=TRUE, sep="\t")
+ha2 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent_hg19/A2.SJ.out.txt", header=TRUE, sep="\t")
+hb2 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent_hg19/B2.SJ.out.txt", header=TRUE, sep="\t")
+hc2 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent_hg19/C2.SJ.out.txt", header=TRUE, sep="\t")
+hd3 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent_hg19/D3.SJ.out.txt", header=TRUE, sep="\t")
+h57 <- read.table("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent_hg19/pUC57.SJ.out.txt", header=TRUE, sep="\t")
 ha2 <- subset(ha2, select=-A2_pos) %>% melt() %>% mutate_all(str_replace_all, "_reads", "")
 hb2 <- subset(hb2, select=-B2_pos) %>% melt() %>% mutate_all(str_replace_all, "_reads", "")
 hc2 <- subset(hc2, select=-C2_pos) %>% melt() %>% mutate_all(str_replace_all, "_reads", "")
@@ -30,14 +30,14 @@ hg <- rbind(ha2,hb2,hc2,hd3,h57)
 hg$value <- as.numeric(hg$value)
 hg$ss <- factor(hg$ss, levels = c("5ss","3ss"))
 
-pdf("~/virus/doc/hbv/rnaseq/maxent/sj.pdf", width = 3.25, height = 2)
+pdf("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/sj.pdf", width = 3.25, height = 2)
 ggplot(hbv, aes(ss,value)) + 
   geom_dotplot(binaxis='y', stackdir='center', fill='white') + 
   stat_summary(fun = "median",  geom = "crossbar", color = "black") + 
   facet_grid(cols = vars(variable)) + scale_y_log10()
 dev.off()
 
-pdf("~/virus/doc/hbv/rnaseq/maxent/sj.hg.pdf", width = 4, height = 2)
+pdf("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/sj.hg.pdf", width = 4, height = 2)
 ggplot(hg, aes(ss,value)) + 
   geom_violin(trim=FALSE) + 
   geom_boxplot(width=0.1, fill="white", outlier.shape = NA)+
@@ -61,7 +61,7 @@ t.test(log(hg[which(hg$ss=='5ss'),]$value), log(hg[which(hg$ss=='3ss'),]$value),
 library(tidyverse)
 library(reshape2)
 library(IDPmisc)
-setwd("~/virus/doc/hbv/rnaseq/ipsa_out/")
+setwd("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/ipsa_out/")
 i <- read.table("hbv/intron.zeta.bed", header=F)
 names(i) <- c('chr','start','end','cosi3','cosi5','strand')
 i <- NaRV.omit(i)
@@ -122,7 +122,7 @@ ggplot(he) +
   geom_histogram(aes(cosi), binwidth = 0.05, color='black', fill=NA, stat = StatBin2) +
   xlim(c(-0.05,1.05))
 
-pdf("~/virus/doc/hbv/rnaseq/ipsa_out/cosi.pdf", width = 3.12, height = 2)
+pdf("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/ipsa_out/cosi.pdf", width = 3.12, height = 2)
 ggplot(i) + 
   geom_histogram(aes(cosi3), binwidth = 0.05, boundary = 0, color='#f8766d', alpha=0.2, fill='#f8766d', stat = StatBin2) + 
   geom_histogram(aes(cosi5), binwidth = 0.05, boundary = 0, color='#00bfc4', alpha=0.2, fill='#00bfc4', stat = StatBin2) + 
@@ -131,7 +131,7 @@ ggplot(i) +
   facet_grid(cols = vars(chr)) +
   theme(panel.grid.major = element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()
-pdf("~/virus/doc/hbv/rnaseq/ipsa_out/cosi.hg.pdf", width = 1.41, height = 2)
+pdf("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/ipsa_out/cosi.hg.pdf", width = 1.41, height = 2)
 ggplot(hi) + 
   geom_histogram(aes(cosi3), binwidth = 0.05, boundary = 0, color='#f8766d', alpha=0.2, fill='#f8766d', stat = StatBin2) + 
   geom_histogram(aes(cosi5), binwidth = 0.05, boundary = 0, color='#00bfc4', alpha=0.2, fill='#00bfc4', stat = StatBin2) + 

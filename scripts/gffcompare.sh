@@ -2,13 +2,13 @@
 
 # comparing the gtf files of rep 1 and 2 using rep 1 as reference
 # and merging BAM file replicates for Gviz's sashimi plot
-mkdir ~/virus/doc/hbv/rnaseq/gffcompare/
+mkdir ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/
 for i in A2 B2 C2 D3; do \
-  cd ~/virus/doc/hbv/rnaseq/gffcompare/
+  cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/
   gffcompare \
   -o ${i} \
-  -r ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf \
-  ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf
+  -r ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf \
+  ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf
   join -j1 -t$'\t' \
   <(grep "=" ${i}.tracking | cut -f5 | awk 'BEGIN {FS="|"} {print $2}' | sort) \
   <(gtfToGenePred -genePredExt ${i}.annotated.gtf stdout | awk '$8!=1' | sort -k1,1) \
@@ -16,8 +16,8 @@ for i in A2 B2 C2 D3; do \
   cat ${i}.txt | genePredToGtf file stdin ${i}.gtf
 
   samtools merge ${i}.bam \
-  ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.bam \
-  ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.bam
+  ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.bam \
+  ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv/${i}/${i}.bam
   samtools index ${i}.bam
 done
 
@@ -25,20 +25,20 @@ done
 # merging and comparing gtf
 for i in B2 C2 D3; do \
   join -1 1 -2 4 -t$'\t' \
-  <(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/$i.pgrna.map | sort -k1,1) \
+  <(awk 'NR>1' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/$i.pgrna.map | sort -k1,1) \
   <(sort -k4,4 $i.gtf) \
   | cut -f2- | join -1 1 -2 5 -t$'\t' \
   -o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
-  <(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/$i.pgrna.map | sort -k1,1) \
+  <(awk 'NR>1' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/$i.pgrna.map | sort -k1,1) \
   <(sort -k5,5 -) > $i.gtf2
 done
 
 join -1 1 -2 4 -t$'\t' \
-<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
-<(sort -k4,4 ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf) \
+<(awk 'NR>1' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
+<(sort -k4,4 ~/HBV_splicing_paper_2020/doc/hbv/ERP013934/X02496.1.pgrna.gtf) \
 | cut -f2- | join -1 1 -2 5 -t$'\t' \
 -o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
-<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
+<(awk 'NR>1' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
 <(sort -k5,5 -) | sed 's/X02496\.1/HBV/' > X02496.gtf
 
 echo -e 'A2.gtf\nB2.gtf2\nC2.gtf2\nD3.gtf2\nX02496.gtf' > gtf.ls
@@ -58,22 +58,22 @@ join -t$'\t' \
 <(sort map.ccs.txt) \
 | cut -f2- \
 | join -1 2 -2 1 -t$'\t' \
-<(sort -k2,2 -) <(gtfToGenePred ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf stdout | sort) \
+<(sort -k2,2 -) <(gtfToGenePred ~/HBV_splicing_paper_2020/doc/hbv/ERP013934/X02496.1.pgrna.gtf stdout | sort) \
 | cut -f2- | genePredToGtf file stdin combined.X02496.1.gtf
 join -t$'\t' \
 <(awk 'NR>12 {print $2 "\t" $1}' map.ccs.txt | sort) \
-<(gtfToGenePred ~/virus/doc/hbv/ERP013934/X02496.1.pgrna.gtf stdout | sort) \
+<(gtfToGenePred ~/HBV_splicing_paper_2020/doc/hbv/ERP013934/X02496.1.pgrna.gtf stdout | sort) \
 | cut -f1,3- | genePredToGtf file stdin combined.X02496.2.gtf
 
 
 # group introns by splice variants
 cat combined.X02496.*.gtf \
 | join -1 1 -2 4 -t$'\t' \
-<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
+<(awk 'NR>1' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
 <(sort -k4,4 -) \
 | cut -f2- | join -1 1 -2 5 -t$'\t' \
 -o 2.2,2.3,2.4,2.1,1.2,2.6,2.7,2.8,2.9 \
-<(awk 'NR>1' ~/virus/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
+<(awk 'NR>1' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/D3.pgrna.map | sort -k1,1) \
 <(sort -k5,5 -) \
 | gtfToGenePred stdin stdout \
 | genePredToBed stdin combined.X02496.bed
@@ -101,16 +101,16 @@ done | grep -v "\-" > gffcompare.map
 for i in A2 B2 C2 D3; do \
   join -j1 -t$'\t' \
   <(sed 's/|/\t/g' ${i}.tracking | grep "=" | cut -f4,7 | sort -k1,1) \
-  <(grep TPM ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf | awk 'BEGIN {OFS="\t"} {print $12,$NF}' | sed 's/[";]//g' | sort -k1,1) \
+  <(grep TPM ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf | awk 'BEGIN {OFS="\t"} {print $12,$NF}' | sed 's/[";]//g' | sort -k1,1) \
   | join -1 2 -2 1 -t$'\t' \
   <(sort -k2,2 -) \
-  <(grep TPM ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf | awk 'BEGIN {OFS="\t"} {print $12,$NF}' | sed 's/[";]//g' | sort -k1,1) \
+  <(grep TPM ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf | awk 'BEGIN {OFS="\t"} {print $12,$NF}' | sed 's/[";]//g' | sort -k1,1) \
   | awk -v s=${i} 'BEGIN {OFS="\t"} {print $1, s, ($3+$4)/2}'
 done > hbv.tpm
 
 for i in A2 B2 C2 D3; do \
-  grep TPM ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf | awk -v s=${i} '{print s "\t" $NF}' | sed 's/[";]//g' | datamash -g1 sum 2
-  grep TPM ~/virus/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf | awk -v s=${i} '{print s "\t" $NF}' | sed 's/[";]//g' | datamash -g1 sum 2
+  grep TPM ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/${i}/${i}.gtf | awk -v s=${i} '{print s "\t" $NF}' | sed 's/[";]//g' | datamash -g1 sum 2
+  grep TPM ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv/${i}/${i}.gtf | awk -v s=${i} '{print s "\t" $NF}' | sed 's/[";]//g' | datamash -g1 sum 2
 done | datamash -g1 mean 2 > total.tpm
 
 join -j1 -t$'\t' \

@@ -1,7 +1,7 @@
 library(tidyverse)
 library(reshape2)
 library(DESeq2)
-setwd("~/virus/doc/hbv/rnaseq/mmquant/")
+setwd("~/HBV_splicing_paper_2020/doc/hbv/rnaseq/mmquant/")
 countData <- read.table("counts.gene.txt", header=TRUE)
 countData <- column_to_rownames(countData, var = "id")
 countData <- subset(countData, select=-c(symbol,description))

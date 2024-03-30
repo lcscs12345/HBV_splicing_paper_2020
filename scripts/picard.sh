@@ -2,7 +2,7 @@
 
 # rep 1
 for i in A2 B2 C2 D3 pUC57; do \
-  cd ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}
+  cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv_rep1/${i}
   cat \
   <(samtools view -H Aligned.sortedByCoord.out.rmdup.uniq.bam) \
   ~/HBV_splicing_paper_2020/ref/hg19/gencode.v19.rRNA.interval_list \
@@ -26,7 +26,7 @@ cat \
 
 # rep 2
 for i in A2 B2 C2 D3 pUC57; do \
-  cd ~/virus/doc/hbv/rnaseq/star_hbv/${i}
+  cd ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/star_hbv/${i}
   cat \
   <(samtools view -H Aligned.sortedByCoord.out.rmdup.uniq.bam) \
   ~/HBV_splicing_paper_2020/ref/hg19/gencode.v19.rRNA.interval_list \

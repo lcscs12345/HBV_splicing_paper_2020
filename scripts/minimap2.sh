@@ -4,7 +4,7 @@
 # the fastq files are available at https://www.ebi.ac.uk/ena/browser/view/ERP013934
 
 # aligning CCS reads to HBV genotype D pgRNA
-cd ~/virus/doc/hbv/ERP013934/
+cd ~/HBV_splicing_paper_2020/doc/hbv/ERP013934/
 minimap2 \
 -a -xsplice -C5 -O6,24 -B4 -uf \
 -L --cs=long \
@@ -30,13 +30,13 @@ conda deactivate
 
 # generating a 'reference' gtf file
 conda activate flair_env
-python ~/virus/src/flair/bin/sam_to_psl.py ccs.sam ccs.psl
-python ~/virus/src/flair/bin/psl_to_bed.py ccs.psl ccs.bed
-python ~/virus/src/flair/flair.py correct \
+python ~/HBV_splicing_paper_2020/src/flair/bin/sam_to_psl.py ccs.sam ccs.psl
+python ~/HBV_splicing_paper_2020/src/flair/bin/psl_to_bed.py ccs.psl ccs.bed
+python ~/HBV_splicing_paper_2020/src/flair/flair.py correct \
 -q ccs.bed \
 -g X02496.1.fa \
 -j score.plus.bed
-python ~/virus/src/flair/flair.py collapse \
+python ~/HBV_splicing_paper_2020/src/flair/flair.py collapse \
 -q flair_all_corrected.bed \
 --filter comprehensive \
 --keep_intermediate \
@@ -55,26 +55,26 @@ bedToGenePred flair.collapse.isoforms.bed stdout \
 
 # mapping D3 pgRNA coordinates to standard coordinates (centered at the EcoRI site)
 mafft \
---addfull ~/virus/ref/hbv/pgrna/D3/D3.pgrna.fa \
---mapout ~/virus/ref/hbv/pgrna/C2/C2.pgrna.fa
-sed '1,2d;s/, /\t/g' ~/virus/ref/hbv/pgrna/D3/D3.pgrna.fa.map \
-| cut -f2- | sed "1i D3_pos\tC2_pos" > ~/virus/doc/hbv/rnaseq/maxent/pgrna.map
+--addfull ~/HBV_splicing_paper_2020/ref/hbv/pgrna/D3/D3.pgrna.fa \
+--mapout ~/HBV_splicing_paper_2020/ref/hbv/pgrna/C2/C2.pgrna.fa
+sed '1,2d;s/, /\t/g' ~/HBV_splicing_paper_2020/ref/hbv/pgrna/D3/D3.pgrna.fa.map \
+| cut -f2- | sed "1i D3_pos\tC2_pos" > ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/pgrna.map
 awk '$3~/exon/ {print $4 "\n" $5}' X02496.1.pgrna.gtf | sort -u \
 | join -t$'\t' \
-- <(sed '1d' ~/virus/doc/hbv/rnaseq/maxent/pgrna.map | sort -k1,1) \
+- <(sed '1d' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/pgrna.map | sort -k1,1) \
 | join -1 2 -2 1 -t$'\t' \
-- <(sed '1d' ~/virus/doc/hbv/rnaseq/maxent/C2.pgrna.map | sort -k1,1) \
+- <(sed '1d' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/maxent/C2.pgrna.map | sort -k1,1) \
 | awk 'BEGIN{OFS="\t"} {if($1+1813<3215) {print $0,$1+1813} else if ($1+1813>3215) {print $0,$1+1813-3215}}' \
-| sed '1i C2\tD3\tA2\tlabel' > ~/virus/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt
+| sed '1i C2\tD3\tA2\tlabel' > ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt
 
 # creating genotype specific gtf files
-awk 'NR>2 {print "-e \x027s|\\t" $2 "\\t|\\t" $3 "\\t|\x027 \\"}' ~/virus/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt \
-| sed '1i sed \\' | sed '$ s|.$|X02496\.1\.pgrna\.gtf > ~/virus/ref/hbv/pgrna/A2/A2.pgrna.gtf|' | sh
-sed -i s'/X02496\.1/A2/' ~/virus/ref/hbv/pgrna/A2/A2.pgrna.gtf
-awk 'NR>2 {print "-e \x027s|\\t" $2 "\\t|\\t" $1 "\\t|\x027 \\"}' ~/virus/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt \
-| sed '1i sed \\' | sed '$ s|.$|X02496\.1\.pgrna\.gtf > ~/virus/ref/hbv/pgrna/B2/B2.pgrna.gtf|' | sh
-sed -i s'/X02496\.1/B2/' ~/virus/ref/hbv/pgrna/B2/B2.pgrna.gtf
-awk 'NR>2 {print "-e \x027s|\\t" $2 "\\t|\\t" $1 "\\t|\x027 \\"}' ~/virus/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt \
-| sed '1i sed \\' | sed '$ s|.$|X02496\.1\.pgrna\.gtf > ~/virus/ref/hbv/pgrna/C2/C2.pgrna.gtf|' | sh
-sed -i s'/X02496\.1/C2/' ~/virus/ref/hbv/pgrna/C2/C2.pgrna.gtf
-sed s'/X02496\.1/D3/' X02496.1.pgrna.gtf > ~/virus/ref/hbv/pgrna/D3/D3.pgrna.gtf
+awk 'NR>2 {print "-e \x027s|\\t" $2 "\\t|\\t" $3 "\\t|\x027 \\"}' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt \
+| sed '1i sed \\' | sed '$ s|.$|X02496\.1\.pgrna\.gtf > ~/HBV_splicing_paper_2020/ref/hbv/pgrna/A2/A2.pgrna.gtf|' | sh
+sed -i s'/X02496\.1/A2/' ~/HBV_splicing_paper_2020/ref/hbv/pgrna/A2/A2.pgrna.gtf
+awk 'NR>2 {print "-e \x027s|\\t" $2 "\\t|\\t" $1 "\\t|\x027 \\"}' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt \
+| sed '1i sed \\' | sed '$ s|.$|X02496\.1\.pgrna\.gtf > ~/HBV_splicing_paper_2020/ref/hbv/pgrna/B2/B2.pgrna.gtf|' | sh
+sed -i s'/X02496\.1/B2/' ~/HBV_splicing_paper_2020/ref/hbv/pgrna/B2/B2.pgrna.gtf
+awk 'NR>2 {print "-e \x027s|\\t" $2 "\\t|\\t" $1 "\\t|\x027 \\"}' ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/gffcompare/pgrna.pos.txt \
+| sed '1i sed \\' | sed '$ s|.$|X02496\.1\.pgrna\.gtf > ~/HBV_splicing_paper_2020/ref/hbv/pgrna/C2/C2.pgrna.gtf|' | sh
+sed -i s'/X02496\.1/C2/' ~/HBV_splicing_paper_2020/ref/hbv/pgrna/C2/C2.pgrna.gtf
+sed s'/X02496\.1/D3/' X02496.1.pgrna.gtf > ~/HBV_splicing_paper_2020/ref/hbv/pgrna/D3/D3.pgrna.gtf
