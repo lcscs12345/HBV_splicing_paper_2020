@@ -1,5 +1,5 @@
 # compare splicing frequencies
-.libPaths(c("/Volumes/scratch/gardnerlab/cslim/R/" , .libPaths()))
+.libPaths(c("~/R/" , .libPaths()))
 library(tidyverse)
 library(reshape2)
 library(exactRankTests)
@@ -57,7 +57,7 @@ t.test(log(hg[which(hg$ss=='5ss'),]$value), log(hg[which(hg$ss=='3ss'),]$value),
 
 
 # completed Splicing Index (coSI)
-.libPaths(c("/Volumes/scratch/gardnerlab/cslim/R/" , .libPaths()))
+.libPaths(c("~/R/" , .libPaths()))
 library(tidyverse)
 library(reshape2)
 library(IDPmisc)

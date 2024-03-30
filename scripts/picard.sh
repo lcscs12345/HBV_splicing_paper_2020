@@ -5,12 +5,12 @@ for i in A2 B2 C2 D3 pUC57; do \
   cd ~/virus/doc/hbv/rnaseq/star_hbv_rep1/${i}
   cat \
   <(samtools view -H Aligned.sortedByCoord.out.rmdup.uniq.bam) \
-  /Volumes/userdata/student_users/chunshenlim/riboseq/ref/hg19/gencode.v19.rRNA.interval_list \
+  ~/HBV_splicing_paper_2020/ref/hg19/gencode.v19.rRNA.interval_list \
   > gencode.v19.rRNA.interval_list
   java -jar /usr/local/bin/picard.jar CollectRnaSeqMetrics \
         I=Aligned.sortedByCoord.out.rmdup.uniq.bam \
         O=picard.RNA_Metrics \
-        REF_FLAT=/Volumes/userdata/student_users/chunshenlim/riboseq/ref/hg19/gencode.v19.annotation.txt \
+        REF_FLAT=~/HBV_splicing_paper_2020/ref/hg19/gencode.v19.annotation.txt \
         RIBOSOMAL_INTERVALS=gencode.v19.rRNA.interval_list \
         CHART_OUTPUT=picard.RNA_Metrics.pdf \
         STRAND_SPECIFICITY=NONE
@@ -29,12 +29,12 @@ for i in A2 B2 C2 D3 pUC57; do \
   cd ~/virus/doc/hbv/rnaseq/star_hbv/${i}
   cat \
   <(samtools view -H Aligned.sortedByCoord.out.rmdup.uniq.bam) \
-  /Volumes/userdata/student_users/chunshenlim/riboseq/ref/hg19/gencode.v19.rRNA.interval_list \
+  ~/HBV_splicing_paper_2020/ref/hg19/gencode.v19.rRNA.interval_list \
   > gencode.v19.rRNA.interval_list
   java -jar /usr/local/bin/picard.jar CollectRnaSeqMetrics \
         I=Aligned.sortedByCoord.out.rmdup.uniq.bam \
         O=picard.RNA_Metrics \
-        REF_FLAT=/Volumes/userdata/student_users/chunshenlim/riboseq/ref/hg19/gencode.v19.annotation.txt \
+        REF_FLAT=~/HBV_splicing_paper_2020/ref/hg19/gencode.v19.annotation.txt \
         RIBOSOMAL_INTERVALS=gencode.v19.rRNA.interval_list \
         CHART_OUTPUT=picard.RNA_Metrics.pdf \
         STRAND_SPECIFICITY=NONE

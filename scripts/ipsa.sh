@@ -4,8 +4,8 @@
 
 # setting up directories
 mkdir ~/virus/doc/hbv/rnaseq/ipsa_out ~/virus/doc/hbv/rnaseq/ipsa_out/hbv ~/virus/doc/hbv/rnaseq/ipsa_out/hg19
-OUT=/Network/Servers/biocldap.otago.ac.nz/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/ipsa_out
-IPSA=/Network/Servers/biocldap.otago.ac.nz/Volumes/userdata/student_users/chunshenlim/virus/src/ipsa
+OUT=~/HBV_splicing_paper_2020/doc/hbv/rnaseq/ipsa_out
+IPSA=~/HBV_splicing_paper_2020/src/ipsa
 
 # HBV
 # building indexs for ipsa

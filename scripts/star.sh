@@ -30,7 +30,7 @@ for i in A2 B2 C2 D3; do \
  --twopassMode Basic \
  --twopass1readsN -1 \
  --genomeDir ~/virus/ref/hbv/pgrna/${i}/star_index \
- --readFilesIn /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep1_1.fastq.gz,/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep2_1.fastq.gz /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep1_2.fastq.gz,/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep2_2.fastq.gz \
+ --readFilesIn ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep1_1.fastq.gz,~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep2_1.fastq.gz ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep1_2.fastq.gz,~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/${i}_rep2_2.fastq.gz \
  --readFilesCommand zcat \
  --outFilterType BySJout \
  --alignIntronMin 20 \
@@ -72,7 +72,7 @@ for i in A2 B2 C2 D3; do \
  --twopassMode Basic \
  --twopass1readsN -1 \
  --genomeDir ~/virus/ref/hbv/pgrna/${i}/star_index \
- --readFilesIn /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_out/${i}_rep2_1.fastq.gz /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_out/${i}_rep2_2.fastq.gz \
+ --readFilesIn ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_out/${i}_rep2_1.fastq.gz ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_out/${i}_rep2_2.fastq.gz \
  --readFilesCommand zcat \
  --outFilterType BySJout \
  --alignIntronMin 20 \
@@ -114,7 +114,7 @@ STAR --runThreadN 20 \
 --twopassMode Basic \
 --twopass1readsN -1 \
 --genomeDir ~/riboseq/ref/hg19/star_rnaseq_index \
---readFilesIn /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep1_1.fastq.gz,/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep2_1.fastq.gz /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep1_2.fastq.gz,/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep2_2.fastq.gz \
+--readFilesIn ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep1_1.fastq.gz,~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep2_1.fastq.gz ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep1_2.fastq.gz,~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_rep1_out/pUC57_rep2_2.fastq.gz \
 --readFilesCommand zcat \
 --outFilterType BySJout \
 --alignIntronMin 20 \
@@ -145,7 +145,7 @@ STAR --runThreadN 20 \
 --twopassMode Basic \
 --twopass1readsN -1 \
 --genomeDir ~/riboseq/ref/hg19/star_rnaseq_index \
---readFilesIn /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_out/pUC57_rep2_1.fastq.gz /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/skewer_out/pUC57_rep2_2.fastq.gz \
+--readFilesIn ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_out/pUC57_rep2_1.fastq.gz ~/HBV_splicing_paper_2020/doc/hbv/rnaseq/skewer_out/pUC57_rep2_2.fastq.gz \
 --readFilesCommand zcat \
 --outFilterType BySJout \
 --alignIntronMin 20 \

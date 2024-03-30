@@ -1,0 +1,30 @@
+# gffcompare v0.10.1 | Command line was:
+#gffcompare -o /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/gffcompare/C2 -r /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/star_hbv_rep1/C2/C2.gtf /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/star_hbv/C2/C2.gtf
+#
+
+#= Summary for dataset: /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/star_hbv/C2/C2.gtf 
+#     Query mRNAs :      11 in       1 loci  (10 multi-exon transcripts)
+#            (1 multi-transcript loci, ~11.0 transcripts per locus)
+# Reference mRNAs :      17 in       1 loci  (16 multi-exon)
+# Super-loci w/ reference transcripts:        1
+#-----------------| Sensitivity | Precision  |
+        Base level:   100.0     |   100.0    |
+        Exon level:    68.4     |    86.7    |
+      Intron level:    80.0     |   100.0    |
+Intron chain level:    31.2     |    50.0    |
+  Transcript level:    35.3     |    54.5    |
+       Locus level:   100.0     |   100.0    |
+
+     Matching intron chains:       5
+       Matching transcripts:       6
+              Matching loci:       1
+
+          Missed exons:       0/19	(  0.0%)
+           Novel exons:       0/15	(  0.0%)
+        Missed introns:       0/15	(  0.0%)
+         Novel introns:       0/12	(  0.0%)
+           Missed loci:       0/1	(  0.0%)
+            Novel loci:       0/1	(  0.0%)
+
+ Total union super-loci across all input datasets: 1 
+11 out of 11 consensus transcripts written in /Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/gffcompare/C2.annotated.gtf (0 discarded as redundant)

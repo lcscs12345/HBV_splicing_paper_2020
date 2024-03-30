@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # rep 1
-fq_dir=/Volumes/BiochemXsan/staff_groups/brownlab/NZGL01919M_no-index-mismatch/NZGL01919M/
+fq_dir=~/HBV_splicing_paper_2020/doc/hbv/rnaseq/rep1
 r1_adapter=AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC  
 r2_adapter=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA
 
@@ -25,7 +25,7 @@ rename 's/C9T78ANXX-1919M-12-2-1_S24_L005-trimmed-pair/pUC57_rep2_/' *.fastq.gz
 
 
 # rep 2
-fq_dir=/Volumes/userdata/student_users/chunshenlim/virus/doc/hbv/rnaseq/rep2/
+fq_dir=~/HBV_splicing_paper_2020/doc/hbv/rnaseq/rep2/
 r1_adapter=AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC  
 r2_adapter=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA
 

@@ -1,0 +1,6 @@
+Stats                       Aligned.sortedByCoord.out          
+# hits:                     18877942          
+# uniquely mapped reads:    12978005 ( 68.7%) 
+# ambiguous hits:             273345 (  1.4%) 
+# non-uniquely mapped hits:  2109473 ( 11.2%) 
+# unassigned hits:           3548954 ( 18.8%) 

@@ -1,0 +1,7 @@
+# gffcompare v0.10.1 | Command line was:
+#gffcompare -i gtf.ls2 -o gffcompare
+#
+
+ Total union super-loci across all input datasets: 1 
+  (1 multi-transcript, ~13.0 transcripts per locus)
+13 out of 13 consensus transcripts written in gffcompare.combined.gtf (0 discarded as redundant)
